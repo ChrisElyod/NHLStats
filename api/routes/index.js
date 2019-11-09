@@ -6,7 +6,7 @@ const axios = require('axios');
 router.get('/', function(req, res, next) {
   axios.get('https://statsapi.web.nhl.com/api/v1/teams')
     .then(response => {
-      console.log(response.data.teams);
+      // console.log(response.data.teams);
       res.status(200).json(response.data.teams);
     });
   

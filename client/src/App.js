@@ -11,7 +11,7 @@ class App extends React.Component {
   }
 
   async componentWillMount() {
-    await axios.get('http://localhost:3000/')
+    await axios.get('http://localhost:3000/getGameData')
       .then(res => {
         this.setState({apiResponse: res.data})
         console.log(res.data);
