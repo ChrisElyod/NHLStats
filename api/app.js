@@ -3,6 +3,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
+const axios = require('axios');
+const cron = require("node-cron");
 
 var indexRouter = require('./routes/index');
 var gameDataRouter = require('./routes/teamData');
@@ -20,5 +22,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/getGameData', gameDataRouter)
 app.use('/users', usersRouter);
+
+cron.schedule('45 2 * * *', function() {
+	axios.post('192.168.1.10:3000/getGameData')
+		.then((res) => {
+			console.log(res);
+		}).catch((e) => {
+			console.log(e);
+		})
+});
 
 module.exports = app;

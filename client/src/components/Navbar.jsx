@@ -1,43 +1,44 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import { Input, Menu, Divider } from 'semantic-ui-react';
+import { Input, Menu, Divider, Icon } from 'semantic-ui-react';
 
 class Navbar extends React.Component {
-  state = { activeItem: 'home' };
+  state = { activeItem: 'home', modalOpen: false };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  openModal = (e) => {
+    const { modalOpen } = this.state;  
+    this.setState({ modalOpen: !modalOpen })
+  }
 
   render() {
     const { activeItem } = this.state;
     return (
-      <Menu pointing secondary>
-        <Menu.Item
-          as={Link}
-          to="/"
-          name="home"
-          active={activeItem === 'home'}
-          onClick={this.handleItemClick}
-        />
-        <Menu.Item
-          as={Link}
-          name="messages"
-          active={activeItem === 'messages'}
-          onClick={this.handleItemClick}
-        />
-        <Menu.Item
-          as={Link}
-          name="friends"
-          active={activeItem === 'friends'}
-          onClick={this.handleItemClick}
-        />
-        <Menu.Menu position="right">
+      <Menu secondary pointing>
+          <Menu.Item
+            name="home"
+            active={activeItem === 'home'}
+            onClick={() => this.openModal}
+          >
+            <Icon name='bars' size="big"/>
+          </Menu.Item>
+        <Menu.Menu position="right" >
           <Menu.Item
             as={Link}
-            name="logout"
-            active={activeItem === 'logout'}
+            name="NHL Stats"
+            active={activeItem === 'messages'}
             onClick={this.handleItemClick}
+            color="blue"
           />
-        </Menu.Menu>
+          <Menu.Item
+            as={Link}
+            name="League Stats"
+            active={activeItem === 'friends'}
+            onClick={this.handleItemClick}
+            color="yellow"
+          />
+          </Menu.Menu>
       </Menu>
     );
   }
