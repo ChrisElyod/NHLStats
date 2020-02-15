@@ -1,5 +1,6 @@
 import React from 'react';
-import axios from 'axios';
+import { client } from './helpers/apolloHeplers';
+import { gql } from 'apollo-boost';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
@@ -9,22 +10,48 @@ import Home from './components/Home';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { apiResponse: '' };
+    this.state = { apiResponse: '', favouriteTeam: '' };
   }
-
-  // async componentWillMount() {
-  //   await axios.get('http://localhost:3000/getGameData').then(res => {
-  //     this.setState({ apiResponse: res.data });
-  //     console.log(res.data);
-  //   });
-  // }
+  componentDidMount() {
+    client
+      .query({
+        query: gql`
+          {
+            teams(id: 10) {
+              id
+              name
+              link
+              venue {
+                name
+              }
+              abbreviation
+              teamName
+              locationName
+              firstYearOfPlay
+              division {
+                name
+              }
+              conference {
+                name
+              }
+              shortName
+              officialSiteUrl
+            }
+          }
+        `,
+      })
+      .then(res => {
+        console.log(res.data.teams[0]);
+        this.setState({ favouriteTeam: res.data.teams[0] });
+      });
+  }
 
   render() {
     return (
       <Router>
         <div>
           <Navbar />
-          <div>
+          <div style={{ height: '100vh' }}>
             <Route exact path="/" component={Home} />
           </div>
         </div>

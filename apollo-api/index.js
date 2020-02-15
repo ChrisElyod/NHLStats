@@ -88,33 +88,101 @@ const typeDefs = gql`
 		type: String
 		abbreviation: String
 	}
+	type Schedule {
+		copyright: String
+		totalItems: Int
+		totalEvents: Int
+		totalGames: Int
+		totalMatches: Int
+		dates: [Dates]
+	}
+	type Dates {
+		date: String
+		totalItems: Int
+		totalEvents: Int
+		totalGames: Int
+		totalMatches: Int
+		games: [Game]
+	}
+	type Game {
+		gamePk: Int
+		link: String
+		gameType: String
+		season: String
+		gameDate: String
+		status: Status
+		teams: ScheduleTeams
+	}
+	type ScheduleTeams {
+		away: Away
+		home: Home
+	}
+	type Away {
+		leagueRecord: LeagueRecord
+		score: Int
+		team: Team
+	}
+	type Home {
+		leagueRecord: LeagueRecord
+		score: Int
+		team: Team
+	}
+	type Team {
+		id: ID!
+		name: String
+		link: String
+	}
+	type LeagueRecord {
+		wins: Int
+		losses: Int
+		ot: Int
+		type: String
+	}
+	type Status {
+		abstractGameState: String
+		codedGameState: String
+		detailedState: String
+		statusCode: String
+		startTimeTBD: Boolean
+	}
 
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
-		teams: [Teams]
-		players(id: ID!): [Players]
+		teams(id: ID): [Teams]
+		players(id: ID): [Players]
+		schedule: Schedule
   }
 `;
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
 	Query: {
-		teams: () => {
+		teams: (data, args) => {
+			if(args) {
+				return axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${args.id}`)
+				.then((res) => {
+					return res.data.teams;
+				});
+			}
 			return axios.get('https://statsapi.web.nhl.com/api/v1/teams')
 				.then((res) => {
 					return res.data.teams;
 			});
 		},
-		players: ({ id }, args) => {
-			console.log(args);
-			return axios.get(`https://statsapi.web.nhl.com/api/v1/people/8473507`)
+		players: (data, args) => {
+			return axios.get(`https://statsapi.web.nhl.com/api/v1/people/${args.id}`)
 				.then((res) => {
-					console.log(res.data.people);
-					// return res.data.people;
+					return res.data.people;
 				})
 		},
+		schedule: (data, args) => {
+			return axios.get('https://statsapi.web.nhl.com/api/v1/schedule')
+				.then((res) => {
+					return res.data
+				})
+		}
 	},
 };
 

@@ -7,23 +7,29 @@ class Navbar extends React.Component {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
-  openModal = (e) => {
-    const { modalOpen } = this.state;  
-    this.setState({ modalOpen: !modalOpen })
-  }
+  openModal = e => {
+    const { modalOpen } = this.state;
+    this.setState({ modalOpen: !modalOpen });
+  };
 
   render() {
     const { activeItem } = this.state;
     return (
-      <Menu secondary pointing>
-          <Menu.Item
-            name="home"
-            active={activeItem === 'home'}
-            onClick={() => this.openModal}
-          >
-            <Icon name='bars' size="big"/>
-          </Menu.Item>
-        <Menu.Menu position="right" >
+      <Menu
+        secondary
+        inverted
+        pointing
+        color="blue"
+        style={{ marginBottom: 0 }}
+      >
+        <Menu.Item
+          name="home"
+          active={activeItem === 'home'}
+          onClick={() => this.openModal}
+        >
+          <Icon name="bars" size="big" />
+        </Menu.Item>
+        <Menu.Menu position="right">
           <Menu.Item
             as={Link}
             name="NHL Stats"
@@ -38,7 +44,7 @@ class Navbar extends React.Component {
             onClick={this.handleItemClick}
             color="yellow"
           />
-          </Menu.Menu>
+        </Menu.Menu>
       </Menu>
     );
   }
