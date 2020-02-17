@@ -23,5 +23,10 @@
   color: #09d3ac;
 }
 .ui.tiny.image {
-  width: 60px
+  width: 55px
+}
+.ui.small.image {
+  width: 200px;
+  height: auto;
+  font-size: .92857143rem;
 }

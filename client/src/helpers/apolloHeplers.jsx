@@ -71,3 +71,38 @@ export const getAllTeams = () => {
     })
     .catch(e => console.log(e));
 }
+export const getTeamSchedule = (teamId, startDate, endDate) => {
+  return client
+    .query({
+      query: gql`
+      {
+        schedule(teamId: ${teamId}, startDate: "${startDate}", endDate: "${endDate}") {
+          dates {
+            date
+            games {
+              gamePk
+              teams {
+                away {
+                  score
+                  team {
+                    name
+                  }
+                }
+                home {
+                  score
+                  team {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      `,
+    })
+    .then(res => res.data)
+    .catch(e => console.log(e));
+}
+
+

@@ -89,10 +89,10 @@ class TeamHomePage extends React.Component {
     const { isLoading, teamAbbrev, teamOptions } = this.state;
     return (
       <div>
-        <div style={{ margin: '1em', display: 'flex', flexDirection: 'row' }}>
+        <div style={{ margin: '1.5em', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
           {teamAbbrev ?
             <Image
-              src={require(`../TeamLogos/TOR.png`)}
+              src={`http://mlse.com/wp-content/uploads/2016/10/16_Leafs.png`}
               size="small"
               circular
               bordered
@@ -104,7 +104,10 @@ class TeamHomePage extends React.Component {
           <div style={{ margin: '.75em' }}>
             <Dropdown
               options={teamOptions}
+              defaultValue={10}
               placeholder="Please Select a Team"
+              search
+              selection
               scrolling
               onChange={this.getSelectedTeam}
             />

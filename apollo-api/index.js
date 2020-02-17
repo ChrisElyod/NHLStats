@@ -183,7 +183,7 @@ const typeDefs = gql`
 		teams(id: ID): [Teams]
 		teamStats(id: ID): TeamStats
 		players(id: ID): [Players]
-		schedule: Schedule
+		schedule(teamId: ID, startDate: String, endDate: String): Schedule
   }
 `;
 // Resolvers define the technique for fetching the types defined in the
@@ -215,6 +215,13 @@ const resolvers = {
 				})
 		},
 		schedule: (data, args) => {
+			console.log(args);
+			if (args.startDate && args.endDate && args.teamId) {
+			return axios.get(`https://statsapi.web.nhl.com/api/v1/schedule?startDate=${args.startDate}&endDate=${args.endDate}&teamId=${args.teamId}`)
+				.then((res) => {
+					return res.data
+				})
+			}
 			return axios.get('https://statsapi.web.nhl.com/api/v1/schedule')
 				.then((res) => {
 					return res.data
