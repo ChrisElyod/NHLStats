@@ -145,12 +145,43 @@ const typeDefs = gql`
 		statusCode: String
 		startTimeTBD: Boolean
 	}
+	type TeamStats {
+		gamesPlayed: Int,
+		wins: Int,
+		losses: Int
+		ot: Int
+		pts: Int
+		ptsPctg: String
+		goalsPerGame: Float
+		goalsAgainstPerGame: Float
+		evGGARatio: Float
+		powerPlayPercentage: String
+		powerPlayGoals: Int
+		powerPlayGoalsAgainst: Int
+		powerPlayOpportunities: Int
+		penaltyKillPercentage: String
+		shotsPerGame: Float
+		shotsAllowed: Float
+		winScoreFirst: Float
+		winOppScoreFirst: Float
+		winLeadFirstPeriod: Float
+		winLeadSecondPeriod: Float
+		winOutshootOpp: Float
+		winOutshotByOpp: Float
+		faceOffsTaken: Float
+		faceOffsWon: Int
+		faceOffsLost: Int
+		faceOffWinPercentage: String
+		shootingPctg: Float
+		savePctg: Float
+	}
 
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
 		teams(id: ID): [Teams]
+		teamStats(id: ID): TeamStats
 		players(id: ID): [Players]
 		schedule: Schedule
   }
@@ -160,7 +191,7 @@ const typeDefs = gql`
 const resolvers = {
 	Query: {
 		teams: (data, args) => {
-			if(args) {
+			if(args.id) {
 				return axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${args.id}`)
 				.then((res) => {
 					return res.data.teams;
@@ -170,6 +201,12 @@ const resolvers = {
 				.then((res) => {
 					return res.data.teams;
 			});
+		},
+		teamStats: (data, args) => {
+			return axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${args.id}/stats`)
+				.then(res => {
+					return res.data.stats[0].splits[0].stat;
+				});
 		},
 		players: (data, args) => {
 			return axios.get(`https://statsapi.web.nhl.com/api/v1/people/${args.id}`)

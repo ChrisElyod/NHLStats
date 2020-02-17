@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import { Input, Menu, Divider, Icon } from 'semantic-ui-react';
+import { Input, Menu, Divider, Icon, Dropdown } from 'semantic-ui-react';
 
 class Navbar extends React.Component {
   state = { activeItem: 'home', modalOpen: false };
@@ -18,33 +18,16 @@ class Navbar extends React.Component {
       <Menu
         secondary
         inverted
-        pointing
-        color="blue"
-        style={{ marginBottom: 0 }}
+        color="purple"
       >
-        <Menu.Item
-          name="home"
-          active={activeItem === 'home'}
-          onClick={() => this.openModal}
-        >
-          <Icon name="bars" size="big" />
-        </Menu.Item>
-        <Menu.Menu position="right">
-          <Menu.Item
-            as={Link}
-            name="NHL Stats"
-            active={activeItem === 'messages'}
-            onClick={this.handleItemClick}
-            color="blue"
-          />
-          <Menu.Item
-            as={Link}
-            name="League Stats"
-            active={activeItem === 'friends'}
-            onClick={this.handleItemClick}
-            color="yellow"
-          />
-        </Menu.Menu>
+        <Dropdown item icon="bars" simple>
+          <Dropdown.Menu>
+            <Dropdown.Item>Team Stats</Dropdown.Item>
+            <Dropdown.Item>Player Stats</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item>Compare Stats</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </Menu>
     );
   }
