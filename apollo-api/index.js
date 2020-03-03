@@ -151,7 +151,7 @@ const typeDefs = gql`
 		losses: Int
 		ot: Int
 		pts: Int
-		ptsPctg: String
+		ptPctg: String
 		goalsPerGame: Float
 		goalsAgainstPerGame: Float
 		evGGARatio: Float
@@ -164,8 +164,8 @@ const typeDefs = gql`
 		shotsAllowed: Float
 		winScoreFirst: Float
 		winOppScoreFirst: Float
-		winLeadFirstPeriod: Float
-		winLeadSecondPeriod: Float
+		winLeadFirstPer: Float
+		winLeadSecondPer: Float
 		winOutshootOpp: Float
 		winOutshotByOpp: Float
 		faceOffsTaken: Float
@@ -175,6 +175,35 @@ const typeDefs = gql`
 		shootingPctg: Float
 		savePctg: Float
 	}
+	type TeamStatsRank {
+		wins: String
+		losses: String
+		ot: String
+		pts: String
+		ptPctg: String
+		goalsPerGame: String
+		goalsAgainstPerGame: String
+		evGGARatio: String
+		powerPlayPercentage: String
+		powerPlayGoals: String
+		powerPlayGoalsAgainst: String
+		powerPlayOpportunities: String
+		penaltyKillPercentage: String
+		shotsPerGame: String
+		shotsAllowed: String
+		winScoreFirst: String
+		winOppScoreFirst: String
+		winLeadFirstPer: String
+		winLeadSecondPer: String
+		winOutshootOpp: String
+		winOutshotByOpp: String
+		faceOffsTaken: String
+		faceOffsWon: String
+		faceOffsLost: String
+		faceOffWinPercentage: String
+		savePctRank: String
+		shootingPctRank: String
+	}
 
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
@@ -182,6 +211,7 @@ const typeDefs = gql`
   type Query {
 		teams(id: ID): [Teams]
 		teamStats(id: ID): TeamStats
+		teamStatsRank(id: ID): TeamStatsRank
 		players(id: ID): [Players]
 		schedule(teamId: ID, startDate: String, endDate: String): Schedule
   }
@@ -202,12 +232,20 @@ const resolvers = {
 					return res.data.teams;
 			});
 		},
-		teamStats: (data, args) => {
+		teamStats: (data, args) => {			
 			return axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${args.id}/stats`)
 				.then(res => {
 					return res.data.stats[0].splits[0].stat;
 				});
 		},
+		teamStatsRank: (data, args) => {
+			console.log(args.id)
+			return axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${args.id}/stats`)
+				.then(res => {
+					console.log(res.data.stats[1].splits[0].stat);
+					return res.data.stats[1].splits[0].stat;
+				});
+		},		
 		players: (data, args) => {
 			return axios.get(`https://statsapi.web.nhl.com/api/v1/people/${args.id}`)
 				.then((res) => {
@@ -215,7 +253,6 @@ const resolvers = {
 				})
 		},
 		schedule: (data, args) => {
-			console.log(args);
 			if (args.startDate && args.endDate && args.teamId) {
 			return axios.get(`https://statsapi.web.nhl.com/api/v1/schedule?startDate=${args.startDate}&endDate=${args.endDate}&teamId=${args.teamId}`)
 				.then((res) => {

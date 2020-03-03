@@ -1,8 +1,6 @@
 import React from 'react';
 import { client } from '../helpers/apolloHeplers';
 import { gql } from 'apollo-boost';
-import Login from './Login';
-import { Image } from 'semantic-ui-react';
 import TeamHomePage from './TeamHomePage';
 
 class Home extends React.Component {
@@ -43,9 +41,6 @@ class Home extends React.Component {
       });
   }
   render() {
-    const { favouriteTeam } = this.state;
-    const teamAbbreviation = 'TOR';
-    // return <Login />;
     return <TeamHomePage />;
   }
 }

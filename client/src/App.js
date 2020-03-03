@@ -1,7 +1,5 @@
 import React from 'react';
-import { client } from './helpers/apolloHeplers';
-import { gql } from 'apollo-boost';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 import Navbar from './components/Navbar';

@@ -23,10 +23,25 @@
   color: #09d3ac;
 }
 .ui.tiny.image {
-  width: 55px
+  width: 80px;
 }
 .ui.small.image {
   width: 200px;
   height: auto;
-  font-size: .92857143rem;
+  font-size: 0.92857143rem;
+}
+td {
+  border: 1px solid #ccc !important;
+}
+.winningTeam {
+  color: green !important;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.losingTeam {
+  color: red !important;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

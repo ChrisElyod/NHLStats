@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import { Input, Menu, Divider, Icon, Dropdown } from 'semantic-ui-react';
+import { Menu, Dropdown } from 'semantic-ui-react';
 
 class Navbar extends React.Component {
   state = { activeItem: 'home', modalOpen: false };
@@ -13,13 +12,8 @@ class Navbar extends React.Component {
   };
 
   render() {
-    const { activeItem } = this.state;
     return (
-      <Menu
-        secondary
-        inverted
-        color="purple"
-      >
+      <Menu secondary inverted color="purple">
         <Dropdown item icon="bars" simple>
           <Dropdown.Menu>
             <Dropdown.Item>Team Stats</Dropdown.Item>
