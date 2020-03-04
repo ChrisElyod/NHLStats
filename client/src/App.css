@@ -45,3 +45,8 @@ td {
   font-weight: bold;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+.statsTable {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0.5em 0.5em !important;
+}

@@ -10,6 +10,7 @@ class TeamCalendar extends React.Component {
     this.state = {
       teamSchedule: [],
       months: [],
+      currentDate: null,
       currentYear: null,
     };
   }
@@ -24,8 +25,12 @@ class TeamCalendar extends React.Component {
   async componentDidUpdate(prevProps) {
     const { teamId } = this.props;
     if (teamId !== prevProps.teamId) {
-      const currentMonth = new Date();
-      const teamSchedule = await this.getMonthsData(teamId, currentMonth);
+      const { currentDate } = this.state;
+      console.log(currentDate);
+      const teamSchedule = await this.getMonthsData(
+        teamId,
+        currentDate ? currentDate : new Date()
+      );
       if (teamSchedule) {
         this.setState({
           teamSchedule: teamSchedule.schedule.dates,
@@ -65,6 +70,7 @@ class TeamCalendar extends React.Component {
     if (teamSchedule) {
       this.setState({
         teamSchedule: teamSchedule.schedule.dates,
+        currentDate: value._d,
       });
     }
   };

@@ -104,6 +104,40 @@ export const getSpecialTeamStats = (teamId, teamRank) => {
     .then(res => res)
     .catch(e => console.log(e));
 };
+export const getFaceoffStats = (teamId, teamRank) => {
+  if (teamRank) {
+    return client
+      .query({
+        query: gql`
+        {
+          teamStatsRank (id: ${teamId}) {
+            faceOffsTaken
+            faceOffsWon
+            faceOffsLost
+            faceOffWinPercentage
+          }
+        }
+      `,
+      })
+      .then(res => res)
+      .catch(e => console.log(e));
+  }
+  return client
+    .query({
+      query: gql`
+      {
+        teamStats (id: ${teamId}) {
+          faceOffsTaken
+          faceOffsWon
+          faceOffsLost
+          faceOffWinPercentage
+        }
+      }
+    `,
+    })
+    .then(res => res)
+    .catch(e => console.log(e));
+};
 export const getAllTeamStats = (teamId, teamRank) => {
   if (teamRank) {
     return client

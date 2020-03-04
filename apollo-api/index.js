@@ -239,10 +239,8 @@ const resolvers = {
 				});
 		},
 		teamStatsRank: (data, args) => {
-			console.log(args.id)
 			return axios.get(`https://statsapi.web.nhl.com/api/v1/teams/${args.id}/stats`)
 				.then(res => {
-					console.log(res.data.stats[1].splits[0].stat);
 					return res.data.stats[1].splits[0].stat;
 				});
 		},		
