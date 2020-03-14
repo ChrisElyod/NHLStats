@@ -1,8 +1,9 @@
 import ApolloClient from 'apollo-boost';
+import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
 export const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: 'http://localhost:4000/',
 });
 
 export const getTeamInfo = teamId => {
@@ -138,6 +139,60 @@ export const getFaceoffStats = (teamId, teamRank) => {
     .then(res => res)
     .catch(e => console.log(e));
 };
+export const getShootingStats = (teamId, teamRank) => {
+  if (teamRank) {
+    return client
+      .query({
+        query: gql`
+        {
+          teamStatsRank (id: ${teamId}) {
+            shotsPerGame
+            shotsAllowed
+            winScoreFirst
+            winOppScoreFirst
+            winLeadFirstPer
+            winLeadSecondPer
+            winOutshootOpp
+            winOutshotByOpp
+            faceOffsTaken
+            faceOffsWon
+            faceOffsLost
+            faceOffWinPercentage
+            savePctRank
+		        shootingPctRank
+          }
+        }
+      `,
+      })
+      .then(res => res)
+      .catch(e => console.log(e));
+  }
+  return client
+    .query({
+      query: gql`
+      {
+        teamStats (id: ${teamId}) {
+          shotsPerGame
+            shotsAllowed
+            winScoreFirst
+            winOppScoreFirst
+            winLeadFirstPer
+            winLeadSecondPer
+            winOutshootOpp
+            winOutshotByOpp
+            faceOffsTaken
+            faceOffsWon
+            faceOffsLost
+            faceOffWinPercentage
+            shootingPctg
+		        savePctg
+        }
+      }
+    `,
+    })
+    .then(res => res)
+    .catch(e => console.log(e));
+};
 export const getAllTeamStats = (teamId, teamRank) => {
   if (teamRank) {
     return client
@@ -240,34 +295,35 @@ export const getAllTeams = () => {
     .catch(e => console.log(e));
 };
 export const getTeamSchedule = async (teamId, startDate, endDate) => {
+  console.log(startDate, endDate, teamId);
   return client
     .query({
       query: gql`
-      {
-        schedule(teamId: ${teamId}, startDate: "${startDate}", endDate: "${endDate}") {
-          dates {
-            date
-            games {
-              gamePk
-              teams {
-                away {
-                  score
-                  team {
-                    name
+        {
+          schedule(teamId: ${teamId}, startDate: "${startDate}", endDate: "${endDate}") {
+            dates {
+              date
+              games {
+                gamePk
+                teams {
+                  away {
+                    score
+                    team {
+                      name
+                    }
                   }
-                }
-                home {
-                  score
-                  team {
-                    name
+                  home {
+                    score
+                    team {
+                      name
+                    }
                   }
                 }
               }
             }
           }
         }
-      }
-      `,
+        `,
     })
     .then(res => {
       return res.data;

@@ -6,9 +6,10 @@ import {
   Table,
   Dimmer,
   Segment,
+  Divider,
 } from 'semantic-ui-react';
 import {
-  getAllTeamStats,
+  getShootingStats,
   getTeamStats,
   getSpecialTeamStats,
   getFaceoffStats,
@@ -36,10 +37,14 @@ class TeamStats extends React.Component {
     const faceoffStats = await getFaceoffStats(teamId);
     const faceoffRank = await getFaceoffStats(teamId, true);
     const faceOffItems = formatTeamStats(faceoffStats, faceoffRank);
+    const shootingStats = await getShootingStats(teamId);
+    const shootingStatsRank = await getShootingStats(teamId, true);
+    const shootingItems = formatTeamStats(shootingStats, shootingStatsRank);
     this.setState({
       gameStats: teamItems,
       specialTeam: specialTeamItems,
       faceoff: faceOffItems,
+      shooting: shootingItems,
       teamId: teamId,
     });
   }
@@ -59,16 +64,20 @@ class TeamStats extends React.Component {
       const faceoffStats = await getFaceoffStats(teamId);
       const faceoffRank = await getFaceoffStats(teamId, true);
       const faceOffItems = formatTeamStats(faceoffStats, faceoffRank);
+      const shootingStats = await getShootingStats(teamId);
+      const shootingStatsRank = await getShootingStats(teamId, true);
+      const shootingItems = formatTeamStats(shootingStats, shootingStatsRank);
       this.setState({
         gameStats: teamItems,
         specialTeam: specialTeamItems,
         faceoff: faceOffItems,
+        shooting: shootingItems,
         teamId: teamId,
       });
     }
   }
   render() {
-    const { gameStats, specialTeam, faceoff } = this.state;
+    const { gameStats, specialTeam, faceoff, shooting } = this.state;
     const gameStatsLoader = typeof gameStats !== 'undefined';
     const specialLoader = typeof specialTeam !== 'undefined';
     const faceoffLoader = typeof faceoff !== 'undefined';
@@ -85,6 +94,7 @@ class TeamStats extends React.Component {
                   >
                     Game Stats
                   </Header>
+                  <Divider clearing />
                   <Dimmer active={!gameStatsLoader} inverted>
                     <Loader size="small">Loading</Loader>
                   </Dimmer>
@@ -106,7 +116,8 @@ class TeamStats extends React.Component {
                   >
                     Special Team Statistics
                   </Header>
-                  <Dimmer active={!gameStatsLoader} inverted>
+                  <Divider clearing />
+                  <Dimmer active={!specialLoader} inverted>
                     <Loader size="small">Loading</Loader>
                   </Dimmer>
                   <Card.Group
@@ -127,11 +138,34 @@ class TeamStats extends React.Component {
                   >
                     Faceoff Statistics
                   </Header>
-                  <Dimmer active={!gameStatsLoader} inverted>
+                  <Divider clearing />
+                  <Dimmer active={!faceoffLoader} inverted>
                     <Loader size="small">Loading</Loader>
                   </Dimmer>
                   <Card.Group
                     items={faceoff}
+                    itemsPerRow={5}
+                    textAlign="center"
+                    style={{ margin: '0px' }}
+                  />
+                </Segment>
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell className="statsTable">
+                <Segment className="statsTable">
+                  <Header
+                    as="h3"
+                    style={{ marginTop: '0px', marginLeft: '10px' }}
+                  >
+                    Shooting/Scoring Statistics
+                  </Header>
+                  <Divider clearing />
+                  <Dimmer active={!gameStatsLoader} inverted>
+                    <Loader size="small">Loading</Loader>
+                  </Dimmer>
+                  <Card.Group
+                    items={shooting}
                     itemsPerRow={5}
                     textAlign="center"
                     style={{ margin: '0px' }}

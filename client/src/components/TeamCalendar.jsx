@@ -183,7 +183,7 @@ class TeamCalendar extends React.Component {
         </div>
       );
     }
-    return;
+    return <div></div>;
   };
   render() {
     return (

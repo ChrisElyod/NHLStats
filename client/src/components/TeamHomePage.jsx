@@ -39,6 +39,8 @@ class TeamHomePage extends React.Component {
   }
   async componentDidMount() {
     const { isloading } = this.state;
+    // const { data, loading, error } = useQuery(GET_TEAM_INFO);
+    // console.log(data);
     getTeamInfo(10).then(res => {
       this.setState(
         {
@@ -171,10 +173,10 @@ class TeamHomePage extends React.Component {
               style={{ width: '300px' }}
             />
           ) : (
-            <Placeholder style={{ height: 150, width: 150 }}>
-              <Placeholder.Image rectangular />
-            </Placeholder>
-          )}
+              <Placeholder style={{ height: 150, width: 150 }}>
+                <Placeholder.Image rectangular />
+              </Placeholder>
+            )}
 
           <div style={{ margin: '.75em' }}>
             <Dropdown
